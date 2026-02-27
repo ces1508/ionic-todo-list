@@ -1,0 +1,24 @@
+<ion-item [style.--category-color]="categoryColor()">
+  <ion-checkbox 
+    [checked]="todo().completed" 
+    (ionChange)="onToggle()"
+    slot="start"
+  />
+  <div class="todo-content" (click)="onEdit()">
+    <ion-label [class.completed]="todo().completed">
+      <strong class="todo-title">{{ todo().title }}</strong>
+      @if (todo().description) {
+        <p class="todo-description">{{ todo().description }}</p>
+      }
+      <p [style]="{color: todo().categoryColor}">{{todo().categoryName}}</p>
+    </ion-label>
+  </div>
+  <ion-buttons slot="end">
+    <ion-button (click)="onEdit()" color="primary">
+      <ion-icon slot="icon-only" name="create-outline" />
+    </ion-button>
+    <ion-button (click)="onDelete()" color="danger">
+      <ion-icon slot="icon-only" name="trash-outline" />
+    </ion-button>
+  </ion-buttons>
+</ion-item>

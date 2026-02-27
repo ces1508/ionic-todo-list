@@ -29,7 +29,10 @@
       "@components/*": ["src/app/components/*"],
       "@pages/*": ["src/app/pages/*"],
       "@services/*": ["src/app/services/*"],
-      "@utils/*": ["src/app/utils/*"]
+      "@utils/*": ["src/app/utils/*"],
+      "@core/*": ["src/app/core/*"],
+      "@adapters/*": ["src/app/adapters/*"],
+      "@repositories/*": ["src/app/repositories/*"]
     }
   },
   "angularCompilerOptions": {

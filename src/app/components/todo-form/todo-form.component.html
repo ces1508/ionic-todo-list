@@ -6,7 +6,7 @@
   </ion-buttons>
   <ion-title>{{ formTitle }}</ion-title>
   <ion-buttons>
-    <ion-button (click)="onSubmit()" [strong]="true" [disabled]="this.todoForm.invalid">
+    <ion-button (click)="onSubmit()" [strong]="true" [disabled]="!isValid()">
       Save
     </ion-button>
   </ion-buttons>
@@ -17,14 +17,22 @@
     <ion-list inset>
       <ion-item>
         <ion-input
-          label="Title"
+          label="Title *"
           labelPlacement="stacked"
           placeholder="What needs to be done?"
           formControlName="title"
           required
         />
       </ion-item>
-
+      <ion-item>
+        <app-search-bar
+          label="Categoria *"
+          placeHolder="Ingresa una categoria"
+          [items]="categories"
+          [initalData]="initialData?.categoryId ?? undefined"
+          (changeItem)="onCategorySelection($event)"
+        ></app-search-bar>
+      </ion-item>
       <ion-item>
         <ion-textarea
           label="Description (optional)"

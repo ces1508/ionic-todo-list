@@ -1,0 +1,35 @@
+.todo-content {
+  flex: 1;
+  cursor: pointer;
+  padding: 4px 0;
+}
+
+.todo-title {
+  font-size: 16px;
+}
+
+.todo-description {
+  font-size: 13px;
+  color: var(--ion-color-medium);
+  margin-top: 4px;
+  white-space: pre-wrap;
+}
+
+.completed {
+  text-decoration: line-through;
+  opacity: 0.6;
+}
+
+ion-checkbox {
+  --checkbox-size: 24px;
+}
+
+ion-item {
+  --category-color: transparent;
+  box-shadow: inset 0 -3px 0 var(--category-color);
+  transition: box-shadow 0.2s ease;
+
+  &:hover {
+    --category-color: var(--ion-color-medium);
+  }
+}

@@ -1,0 +1,18 @@
+<ion-item button detail="false" (click)="categoryModal.present()">
+  <ion-label position="stacked">{{label()}}</ion-label>
+  <div class="fake-input">
+    {{ selectedText() || placeHolder() }}
+  </div>
+</ion-item>
+<ion-modal #categoryModal>
+  <ng-template>
+    <app-typeahead
+      class="ion-page"
+      title="Select Category"
+      [items]="items()"
+      [selectedItem]="initalData() ?? 0"
+      (selectionChange)="onCategorySelection($event)"
+      (selectionCancel)="onCategoryCancel()"
+    ></app-typeahead>
+  </ng-template>
+</ion-modal>

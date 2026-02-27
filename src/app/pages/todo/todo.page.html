@@ -7,6 +7,15 @@
       </ion-button>
     </ion-buttons>
   </ion-toolbar>
+  <ion-toolbar>
+    <app-search-bar
+      label="Filtrar por categoria"
+      [items]="autoCompleteCategoryData()"
+      placeHolder=""
+      [initalData]="categoryFilterId()"
+      (changeItem)="handleFilterByCategory($event)"
+    ></app-search-bar>
+  </ion-toolbar>
 </ion-header>
 
 <ion-content [fullscreen]="true">
@@ -16,6 +25,7 @@
     </ion-toolbar>
   </ion-header>
 
+  @defer (when todos().length > 0) {
   <div class="filters">
     <ion-segment [value]="filter()" (ionChange)="onFilterChange($event)">
       <ion-segment-button value="all">
@@ -29,7 +39,6 @@
       </ion-segment-button>
     </ion-segment>
   </div>
-
   <ion-list inset>
     @for (todo of todos(); track todo.id) {
     <app-todo-item
@@ -38,19 +47,24 @@
       (deleteTodo)="onDelete($event)"
       (editTodo)="openEditModal($event)"
     />
-    } @empty {
-    <app-empty-state
-      title="No todos yet"
-      message="Tap + to add your first todo"
-      icon="checkmark-circle-outline"
-    />
     }
   </ion-list>
-
-  @if (completedCount() > 0) {
+  } @placeholder {
+  <app-empty-state
+    [title]="emptyDatComponent().title"
+    [message]="emptyDatComponent().message"
+    icon="checkmark-circle-outline"
+  >
+    @if (!hasCategories()) {
+    <ion-button fill="clear" (click)="goToCategories()"
+      >Add Category</ion-button
+    >
+    }
+  </app-empty-state>
+  } @if (completedCount() > 0) {
   <div class="footer">
     <span>{{ completedCount() }} completed</span>
-    <ion-button fill="clear" (click)="clearCompleted()"> Clear all </ion-button>
+    <ion-button fill="clear" (click)="clearCompleted()">Clear all</ion-button>
   </div>
   }
 </ion-content>

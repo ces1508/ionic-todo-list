@@ -1,0 +1,14 @@
+<ion-item [style.--category-color]="category().color">
+    <app-dot-color [color]="category().color"></app-dot-color>
+  <ion-label>
+    <strong class="category-name">{{ category().name }}</strong>
+  </ion-label>
+  <ion-buttons slot="end">
+    <ion-button (click)="onEdit()" color="primary">
+      <ion-icon slot="icon-only" name="create-outline" />
+    </ion-button>
+    <ion-button (click)="onDelete()" color="danger">
+      <ion-icon slot="icon-only" name="trash-outline" />
+    </ion-button>
+  </ion-buttons>
+</ion-item>

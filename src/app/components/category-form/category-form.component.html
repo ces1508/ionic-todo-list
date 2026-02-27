@@ -1,0 +1,44 @@
+<div class="form-header">
+  <ion-buttons>
+    <ion-button (click)="closeModal()">
+      <ion-icon slot="icon-only" name="close-outline" />
+    </ion-button>
+  </ion-buttons>
+  <ion-title>{{ formTitle }}</ion-title>
+  <ion-buttons>
+    <ion-button (click)="onSubmit()" [strong]="true" [disabled]="!isValid()">
+      Save
+    </ion-button>
+  </ion-buttons>
+</div>
+
+<ion-content class="form-content">
+  <form [formGroup]="categoryForm" (ngSubmit)="onSubmit()">
+    <ion-list inset>
+      <ion-item>
+        <ion-input
+          label="Name"
+          labelPlacement="stacked"
+          placeholder="Category name"
+          formControlName="name"
+          required
+        />
+      </ion-item>
+
+      <ion-item>
+        <ion-label>Color (optional)</ion-label>
+        <div class="color-options">
+          @for (color of colors; track color) {
+            <button
+              type="button"
+              class="color-btn"
+              [style.background-color]="color"
+              [class.selected]="categoryForm.get('color')?.value === color"
+              (click)="categoryForm.get('color')?.setValue(color)"
+            ></button>
+          }
+        </div>
+      </ion-item>
+    </ion-list>
+  </form>
+</ion-content>

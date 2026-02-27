@@ -1,7 +1,12 @@
-import { Component, input } from '@angular/core';
+import { Component, input, OutputEmitterRef, output } from '@angular/core';
 import { IonicModule } from '@ionic/angular';
 import { addIcons } from 'ionicons';
 import { documentTextOutline } from 'ionicons/icons';
+
+export interface EmptyStateAction {
+  label: string;
+  handler: () => void;
+}
 
 @Component({
   selector: 'app-empty-state',
@@ -16,6 +21,16 @@ import { documentTextOutline } from 'ionicons/icons';
       @if (message()) {
         <p class="empty-message">{{ message() }}</p>
       }
+      @if (action()) {
+        <ion-button
+          fill="solid"
+          class="empty-action"
+          (click)="action()!.handler()"
+        >
+          {{ action()!.label }}
+        </ion-button>
+      }
+      <ng-content></ng-content>
     </div>
   `,
   styles: `
@@ -45,8 +60,12 @@ import { documentTextOutline } from 'ionicons/icons';
     .empty-message {
       font-size: 14px;
       color: var(--ion-color-medium);
-      margin: 0;
+      margin: 0 0 16px;
       max-width: 280px;
+    }
+
+    .empty-action {
+      margin-bottom: 8px;
     }
   `,
 })
@@ -54,6 +73,7 @@ export class EmptyStateComponent {
   title = input<string>('');
   message = input<string>('');
   icon = input<string>('document-text-outline');
+  action = input<EmptyStateAction | null>(null);
 
   constructor() {
     addIcons({ documentTextOutline });

@@ -1,23 +1,40 @@
-import { Component, output, Input, ChangeDetectionStrategy, OnInit, inject } from '@angular/core';
-import { IonicModule, ModalController } from '@ionic/angular';
-import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import {
+  Component,
+  Input,
+  ChangeDetectionStrategy,
+  OnInit,
+  inject,
+} from '@angular/core';
+import { toSignal } from '@angular/core/rxjs-interop';
+import { IonicModule, ModalController, IonModal } from '@ionic/angular';
+import {
+  FormControl,
+  FormGroup,
+  ReactiveFormsModule,
+  Validators,
+} from '@angular/forms';
+import { map } from 'rxjs';
 import { addIcons } from 'ionicons';
 import { closeOutline } from 'ionicons/icons';
-import { Todo, TodoFormData } from '../../models/todo.model';
-import { trimObjectValues } from '../../utils/trim.util';
+import { Todo, TodoFormData } from '@models/todo.model';
+import { trimObjectValues } from '@utils/trim.util';
+import { TypeaheadItem } from '@models/type-head.model';
+import { SearchBarComponent } from '@components/search-bar/search-bar.component';
 
 @Component({
   selector: 'app-todo-form',
   standalone: true,
-  imports: [IonicModule, ReactiveFormsModule],
+  imports: [IonicModule, ReactiveFormsModule, SearchBarComponent],
   templateUrl: './todo-form.component.html',
   styleUrls: ['./todo-form.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class TodoFormComponent implements OnInit {
-  modalController = inject(ModalController);
+  private readonly modalController = inject(ModalController);
+
   @Input() mode: 'create' | 'edit' = 'create';
   @Input() initialData: Todo | null = null;
+  @Input() categories: TypeaheadItem[] = [];
 
   todoForm = new FormGroup({
     title: new FormControl<string>('', [
@@ -25,7 +42,13 @@ export class TodoFormComponent implements OnInit {
       Validators.minLength(3),
     ]),
     description: new FormControl<string>('', [Validators.maxLength(255)]),
+    categoryId: new FormControl<number | null>(null),
   });
+
+  readonly isValid = toSignal(
+    this.todoForm.statusChanges.pipe(map(() => this.todoForm.valid)),
+    { initialValue: false },
+  );
 
   get formTitle(): string {
     return this.mode === 'create' ? 'New Todo' : 'Edit Todo';
@@ -49,15 +72,22 @@ export class TodoFormComponent implements OnInit {
     }
   }
 
+  onCategorySelection(data: TypeaheadItem | undefined): void {
+    if (data?.value) {
+      this.todoForm.patchValue({ categoryId: data.value });
+    }
+  }
+
   protected closeModal(formData: TodoFormData | undefined = undefined): void {
     this.modalController.dismiss(formData, formData ? 'submit' : 'cancel');
   }
 
   private fillForm(): void {
-    const { title, description } = this.initialData!;
+    const { title, description, categoryId } = this.initialData!;
     this.todoForm.setValue({
       title,
       description: description || '',
+      categoryId: categoryId ?? null,
     });
   }
 
@@ -65,6 +95,7 @@ export class TodoFormComponent implements OnInit {
     this.todoForm.setValue({
       title: '',
       description: '',
+      categoryId: null,
     });
   }
 }

@@ -1,0 +1,24 @@
+<app-page-header title="Categories" (addElement)="openCreateModal()"></app-page-header>
+<ion-content [fullscreen]="true">
+  <ion-header collapse="condense">
+    <ion-toolbar>
+      <ion-title size="large">Categories</ion-title>
+    </ion-toolbar>
+  </ion-header>
+
+  <ion-list inset>
+    @for (category of categories(); track category.id) {
+      <app-category-item
+        [category]="category"
+        (deleteCategory)="onDelete($event)"
+        (editCategory)="openEditModal($event)"
+      />
+    } @empty {
+      <app-empty-state
+        title="No categories yet"
+        message="Tap + to add your first category"
+        icon="pricetag-outline"
+      />
+    }
+  </ion-list>
+</ion-content>

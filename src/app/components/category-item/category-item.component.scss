@@ -1,0 +1,13 @@
+.color-indicator {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+}
+
+.category-name {
+  font-size: 16px;
+}
+
+ion-item {
+  --category-color: transparent;
+}
