@@ -1,4 +1,9 @@
-import { Component, inject, signal } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  inject,
+  signal,
+} from '@angular/core';
 import { IonicModule, ModalController } from '@ionic/angular';
 import { addIcons } from 'ionicons';
 import { add } from 'ionicons/icons';
@@ -14,6 +19,7 @@ import { TodoFormComponent } from '../../components/todo-form/todo-form.componen
   imports: [IonicModule, TodoItemComponent, EmptyStateComponent],
   templateUrl: './todo.page.html',
   styleUrls: ['./todo.page.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class TodoPage {
   private readonly todoService = inject(TodoService);
@@ -67,7 +73,7 @@ export class TodoPage {
     } else {
       this.todoService.addTodo(data);
     }
-    this.editingTodo.set(null);
+    this.resetEditingTodo();
   }
 
   private async openFormModal({
@@ -91,5 +97,10 @@ export class TodoPage {
     if (role === 'submit' && data) {
       this.onFormSubmit(data);
     }
+    this.resetEditingTodo();
+  }
+
+  private resetEditingTodo(): void {
+    this.editingTodo.set(null);
   }
 }

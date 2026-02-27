@@ -16,14 +16,16 @@ import { trimObjectValues } from '../../utils/trim.util';
 })
 export class TodoFormComponent implements OnInit {
   modalController = inject(ModalController);
-  @Input() mode : 'create' | 'edit' = 'create';
+  @Input() mode: 'create' | 'edit' = 'create';
   @Input() initialData: Todo | null = null;
 
   todoForm = new FormGroup({
-    title: new FormControl<string>('', [Validators.required, Validators.minLength(3)]),
+    title: new FormControl<string>('', [
+      Validators.required,
+      Validators.minLength(3),
+    ]),
     description: new FormControl<string>('', [Validators.maxLength(255)]),
   });
-
 
   get formTitle(): string {
     return this.mode === 'create' ? 'New Todo' : 'Edit Todo';
@@ -47,7 +49,7 @@ export class TodoFormComponent implements OnInit {
     }
   }
 
-  protected closeModal(formData:TodoFormData | undefined = undefined): void {
+  protected closeModal(formData: TodoFormData | undefined = undefined): void {
     this.modalController.dismiss(formData, formData ? 'submit' : 'cancel');
   }
 
@@ -65,5 +67,4 @@ export class TodoFormComponent implements OnInit {
       description: '',
     });
   }
-
 }
