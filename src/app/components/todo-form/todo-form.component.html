@@ -1,0 +1,40 @@
+<div class="form-header">
+  <ion-buttons>
+    <ion-button (click)="closeModal()">
+      <ion-icon slot="icon-only" name="close-outline" />
+    </ion-button>
+  </ion-buttons>
+  <ion-title>{{ formTitle }}</ion-title>
+  <ion-buttons>
+    <ion-button (click)="onSubmit()" [strong]="true" [disabled]="this.todoForm.invalid">
+      Save
+    </ion-button>
+  </ion-buttons>
+</div>
+
+<ion-content class="form-content">
+  <form [formGroup]="todoForm" (ngSubmit)="onSubmit()">
+    <ion-list inset>
+      <ion-item>
+        <ion-input
+          label="Title"
+          labelPlacement="stacked"
+          placeholder="What needs to be done?"
+          formControlName="title"
+          required
+        />
+      </ion-item>
+
+      <ion-item>
+        <ion-textarea
+          label="Description (optional)"
+          labelPlacement="stacked"
+          placeholder="Add more details..."
+          [rows]="4"
+          [autoGrow]="true"
+          formControlName="description"
+        />
+      </ion-item>
+    </ion-list>
+  </form>
+</ion-content>

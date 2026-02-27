@@ -1,0 +1,25 @@
+    .form-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 8px 8px 8px 0;
+      border-bottom: 1px solid var(--ion-color-light);
+    }
+
+    .form-header ion-title {
+      font-size: 17px;
+    }
+
+    .form-content {
+      --padding-top: 16px;
+    }
+
+    ion-item {
+      --padding-start: 0;
+      --inner-padding-end: 0;
+    }
+
+    ion-input,
+    ion-textarea {
+      --padding-start: 16px;
+    }

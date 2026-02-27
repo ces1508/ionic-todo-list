@@ -1,0 +1,56 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-title>Todo List</ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="openCreateModal()">
+        <ion-icon slot="icon-only" name="add" />
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <ion-header collapse="condense">
+    <ion-toolbar>
+      <ion-title size="large">Todo List</ion-title>
+    </ion-toolbar>
+  </ion-header>
+
+  <div class="filters">
+    <ion-segment [value]="filter()" (ionChange)="onFilterChange($event)">
+      <ion-segment-button value="all">
+        <ion-label>All</ion-label>
+      </ion-segment-button>
+      <ion-segment-button value="active">
+        <ion-label>Active</ion-label>
+      </ion-segment-button>
+      <ion-segment-button value="completed">
+        <ion-label>Done</ion-label>
+      </ion-segment-button>
+    </ion-segment>
+  </div>
+
+  <ion-list inset>
+    @for (todo of todos(); track todo.id) {
+    <app-todo-item
+      [todo]="todo"
+      (toggleComplete)="onToggle($event)"
+      (deleteTodo)="onDelete($event)"
+      (editTodo)="openEditModal($event)"
+    />
+    } @empty {
+    <app-empty-state
+      title="No todos yet"
+      message="Tap + to add your first todo"
+      icon="checkmark-circle-outline"
+    />
+    }
+  </ion-list>
+
+  @if (completedCount() > 0) {
+  <div class="footer">
+    <span>{{ completedCount() }} completed</span>
+    <ion-button fill="clear" (click)="clearCompleted()"> Clear all </ion-button>
+  </div>
+  }
+</ion-content>
