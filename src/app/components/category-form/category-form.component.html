@@ -7,7 +7,7 @@
   <ion-title>{{ formTitle }}</ion-title>
   <ion-buttons>
     <ion-button (click)="onSubmit()" [strong]="true" [disabled]="!isValid()">
-      Save
+      {{ texts.buttons.save }}
     </ion-button>
   </ion-buttons>
 </div>
@@ -17,16 +17,16 @@
     <ion-list inset>
       <ion-item>
         <ion-input
-          label="Name"
+          [label]="texts.form.nameRequired"
           labelPlacement="stacked"
-          placeholder="Category name"
+          [placeholder]="texts.placeholders.categoryName"
           formControlName="name"
           required
         />
       </ion-item>
 
       <ion-item>
-        <ion-label>Color (optional)</ion-label>
+        <ion-label>{{ texts.form.optional }}</ion-label>
         <div class="color-options">
           @for (color of colors; track color) {
             <button

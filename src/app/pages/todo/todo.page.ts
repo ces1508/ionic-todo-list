@@ -17,7 +17,12 @@ import { EmptyStateComponent } from '@components/empty-state/empty-state.compone
 import { TodoFormComponent } from '@components/todo-form/todo-form.component';
 import { Router } from '@angular/router';
 import { SearchBarComponent } from '@components/search-bar/search-bar.component';
+import { ShareButtonComponent } from '@components/share-button/share-button.component';
 import { TypeaheadItem } from '@models/type-head.model';
+import { RemoteConfigService } from '@services/remote-config/remote-config.service';
+import { REMOTE_CONFIG_DOWNLOAD_REPORT_KEY } from '@core/remote-config.constants';
+import { APP_TEXTS_TOKEN } from '@core/app-texts';
+import { from } from 'rxjs';
 
 @Component({
   selector: 'app-todo',
@@ -27,6 +32,7 @@ import { TypeaheadItem } from '@models/type-head.model';
     TodoItemComponent,
     EmptyStateComponent,
     SearchBarComponent,
+    ShareButtonComponent,
   ],
   templateUrl: './todo.page.html',
   styleUrls: ['./todo.page.scss'],
@@ -37,7 +43,9 @@ export class TodoPage implements OnInit {
   private readonly categoryService = inject(CategoryService);
   private readonly modalController = inject(ModalController);
   private readonly alertController = inject(AlertController);
+  private readonly remoteConfigService = inject(RemoteConfigService);
   private readonly router = inject(Router);
+  readonly texts = inject(APP_TEXTS_TOKEN);
 
   readonly todos = this.todoService.filteredTodos;
   readonly filter = this.todoService.filter;
@@ -47,17 +55,18 @@ export class TodoPage implements OnInit {
   categoryFilterId = this.todoService.categoryFilter;
 
   editingTodo = signal<Todo | null>(null);
+  canShare = signal<boolean>(true);
 
   emptyDatComponent = computed(() => {
     if (this.hasCategories()) {
       return {
-        title: 'No todos yet',
-        message: 'Tap + to add your first todo',
+        title: this.texts.empty.noTodos,
+        message: this.texts.empty.tapToAddFirstTodo,
       };
     }
     return {
-      title: 'No Categories yet',
-      message: 'first create a category',
+      title: this.texts.empty.noCategories,
+      message: this.texts.empty.tapToAddFirstCategory,
     };
   });
 
@@ -73,11 +82,12 @@ export class TodoPage implements OnInit {
   }
 
   ngOnInit(): void {
+    this.checkRemoteConfig();
     this.getTodos();
   }
 
   getTodos() {
-    this.todoService.loadTodos().then(() => console.log('loading todos'));
+    this.todoService.loadTodos();
   }
 
   onFilterChange(event: CustomEvent): void {
@@ -130,15 +140,15 @@ export class TodoPage implements OnInit {
 
   private async showNoCategoriesAlert(): Promise<void> {
     const alert = await this.alertController.create({
-      header: 'No Categories',
-      message: 'Please create at least one category before adding todos.',
+      header: this.texts.alerts.noCategories,
+      message: this.texts.alerts.createCategoryFirst,
       buttons: [
         {
-          text: 'Cancel',
+          text: this.texts.buttons.cancel,
           role: 'cancel',
         },
         {
-          text: 'Create Category',
+          text: this.texts.alerts.createCategory,
           handler: () => this.goToCategories(),
         },
       ],
@@ -176,9 +186,6 @@ export class TodoPage implements OnInit {
     await modal.present();
     const { data, role } = await modal.onWillDismiss<TodoFormData>();
     if (role === 'submit' && data) {
-      console.log({
-        formData: data,
-      });
       this.onFormSubmit(data);
     }
     this.resetEditingTodo();
@@ -187,4 +194,21 @@ export class TodoPage implements OnInit {
   private resetEditingTodo(): void {
     this.editingTodo.set(null);
   }
+
+  checkRemoteConfig() {
+    from(this.remoteConfigService.load()).subscribe({
+      next: () => {
+        const remoteValue = this.remoteConfigService.getBoolean(
+          REMOTE_CONFIG_DOWNLOAD_REPORT_KEY,
+        );
+        if (remoteValue !== this.canShare()) {
+          this.canShare.set(remoteValue);
+        }
+      },
+      error: () => {
+        // Silent fail for remote config
+      },
+    });
+  }
 }
+

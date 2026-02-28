@@ -1,8 +1,8 @@
-<app-page-header title="Categories" (addElement)="openCreateModal()"></app-page-header>
+<app-page-header [title]="texts.pages.categories" (addElement)="openCreateModal()"></app-page-header>
 <ion-content [fullscreen]="true">
   <ion-header collapse="condense">
     <ion-toolbar>
-      <ion-title size="large">Categories</ion-title>
+      <ion-title size="large">{{ texts.pages.categories }}</ion-title>
     </ion-toolbar>
   </ion-header>
 
@@ -15,8 +15,8 @@
       />
     } @empty {
       <app-empty-state
-        title="No categories yet"
-        message="Tap + to add your first category"
+        [title]="texts.empty.noCategories"
+        [message]="texts.empty.tapToAddFirstCategory"
         icon="pricetag-outline"
       />
     }

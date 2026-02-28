@@ -37,7 +37,4 @@ export class DatabaseService {
     return this.sqliteAdapter;
   }
 
-  async isReady(): Promise<boolean> {
-    return this.sqliteAdapter.isInitializedCheck();
-  }
 }

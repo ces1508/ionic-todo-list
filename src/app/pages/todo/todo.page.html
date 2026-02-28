@@ -1,6 +1,11 @@
 <ion-header [translucent]="true">
   <ion-toolbar>
-    <ion-title>Todo List</ion-title>
+    @if (canShare()) {
+      <ion-buttons slot="start" >
+        <app-share-button />
+      </ion-buttons>
+    }
+    <ion-title>{{ texts.pages.todoList }}</ion-title>
     <ion-buttons slot="end">
       <ion-button (click)="openCreateModal()">
         <ion-icon slot="icon-only" name="add" />
@@ -9,9 +14,10 @@
   </ion-toolbar>
   <ion-toolbar>
     <app-search-bar
-      label="Filtrar por categoria"
+      [label]="texts.placeholders.filterByCategory"
       [items]="autoCompleteCategoryData()"
       placeHolder=""
+      [typeaheadTitle]="texts.typeahead.selectCategory"
       [initalData]="categoryFilterId()"
       (changeItem)="handleFilterByCategory($event)"
     ></app-search-bar>
@@ -21,7 +27,7 @@
 <ion-content [fullscreen]="true">
   <ion-header collapse="condense">
     <ion-toolbar>
-      <ion-title size="large">Todo List</ion-title>
+      <ion-title size="large">{{ texts.pages.todoList }}</ion-title>
     </ion-toolbar>
   </ion-header>
 
@@ -29,13 +35,13 @@
   <div class="filters">
     <ion-segment [value]="filter()" (ionChange)="onFilterChange($event)">
       <ion-segment-button value="all">
-        <ion-label>All</ion-label>
+        <ion-label>{{ texts.filters.all }}</ion-label>
       </ion-segment-button>
       <ion-segment-button value="active">
-        <ion-label>Active</ion-label>
+        <ion-label>{{ texts.filters.active }}</ion-label>
       </ion-segment-button>
       <ion-segment-button value="completed">
-        <ion-label>Done</ion-label>
+        <ion-label>{{ texts.filters.completed }}</ion-label>
       </ion-segment-button>
     </ion-segment>
   </div>
@@ -57,14 +63,22 @@
   >
     @if (!hasCategories()) {
     <ion-button fill="clear" (click)="goToCategories()"
-      >Add Category</ion-button
+      >{{ texts.buttons.addCategory }}</ion-button
     >
     }
   </app-empty-state>
-  } @if (completedCount() > 0) {
-  <div class="footer">
-    <span>{{ completedCount() }} completed</span>
-    <ion-button fill="clear" (click)="clearCompleted()">Clear all</ion-button>
-  </div>
+  } @if (todos().length > 0) {
+  <ion-footer>
+    <ion-toolbar>
+      @if (completedCount() > 0) {
+        <span slot="end" class="completed-count">
+          {{ completedCount() }} {{ texts.footer.completed }}
+          <ion-button fill="clear" size="small" (click)="clearCompleted()">
+            {{ texts.footer.clearAll }}
+          </ion-button>
+        </span>
+      }
+    </ion-toolbar>
+  </ion-footer>
   }
 </ion-content>

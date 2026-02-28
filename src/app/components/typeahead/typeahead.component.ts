@@ -6,6 +6,7 @@ import {
   OnInit,
   signal,
   computed,
+  inject,
 } from '@angular/core';
 import { IonicModule } from '@ionic/angular';
 import { TypeaheadItem } from '@models/type-head.model';
@@ -16,6 +17,8 @@ import {
   chevronBackOutline,
   checkmarkCircleOutline,
 } from 'ionicons/icons';
+import { APP_TEXTS_TOKEN } from '@core/app-texts';
+import { AppTexts } from '@core/app-texts';
 
 @Component({
   selector: 'app-typeahead',
@@ -32,7 +35,7 @@ import {
         <ion-title>{{ title() }}</ion-title>
         <ion-buttons slot="end">
           <ion-button (click)="confirmSelection()" [strong]="true">
-            Done
+            {{ texts.typeahead.done }}
           </ion-button>
         </ion-buttons>
       </ion-toolbar>
@@ -60,7 +63,7 @@ import {
           </ion-item>
         } @empty {
           <ion-item>
-            <ion-label>No items available</ion-label>
+            <ion-label>{{ texts.typeahead.noItemsAvailable }}</ion-label>
           </ion-item>
         }
       </ion-list>
@@ -69,7 +72,9 @@ import {
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class TypeaheadComponent implements OnInit {
-  title = input<string>('Select');
+  readonly texts = inject<AppTexts>(APP_TEXTS_TOKEN);
+
+  title = input<string>('Seleccionar');
   items = input<TypeaheadItem[]>([]);
   selectedItem = input<number>(0);
 

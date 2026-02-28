@@ -13,6 +13,7 @@ import { CategoryItemComponent } from '@components/category-item/category-item.c
 import { EmptyStateComponent } from '@components/empty-state/empty-state.component';
 import { CategoryFormComponent } from '@components/category-form/category-form.component';
 import { PageHeaderComponent } from "@components/page-header/page-header.component";
+import { APP_TEXTS_TOKEN } from '@core/app-texts';
 
 @Component({
   selector: 'app-categories',
@@ -25,6 +26,7 @@ import { PageHeaderComponent } from "@components/page-header/page-header.compone
 export class CategoriesPage {
   private readonly categoryService = inject(CategoryService);
   private readonly modalController = inject(ModalController);
+  readonly texts = inject(APP_TEXTS_TOKEN);
 
   readonly categories = this.categoryService.categories;
 

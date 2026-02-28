@@ -14,6 +14,7 @@ export class SearchBarComponent implements OnInit {
   initalData = input<TypeaheadItem['value'] | undefined>(undefined);
   label = input.required<string>();
   placeHolder = input.required<string>();
+  typeaheadTitle = input<string>('Seleccionar');
   items = input.required<TypeaheadItem[]>();
   changeItem = output<TypeaheadItem|undefined>();
 

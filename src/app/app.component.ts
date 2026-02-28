@@ -8,6 +8,7 @@ import {
 import { Router, RouterOutlet } from '@angular/router';
 import { IonicModule } from '@ionic/angular';
 import { CategoryService } from '@services/category/category.service';
+import { RemoteConfigService } from '@services/remote-config/remote-config.service';
 
 @Component({
   selector: 'app-root',
@@ -18,6 +19,7 @@ import { CategoryService } from '@services/category/category.service';
 })
 export class AppComponent implements OnInit {
   categoryService = inject(CategoryService);
+  remoteConfig = inject(RemoteConfigService);
 
   ngOnInit(): void {
     this.getCategories();

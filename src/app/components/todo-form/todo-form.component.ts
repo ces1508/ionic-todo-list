@@ -20,6 +20,7 @@ import { Todo, TodoFormData } from '@models/todo.model';
 import { trimObjectValues } from '@utils/trim.util';
 import { TypeaheadItem } from '@models/type-head.model';
 import { SearchBarComponent } from '@components/search-bar/search-bar.component';
+import { APP_TEXTS_TOKEN } from '@core/app-texts';
 
 @Component({
   selector: 'app-todo-form',
@@ -31,6 +32,7 @@ import { SearchBarComponent } from '@components/search-bar/search-bar.component'
 })
 export class TodoFormComponent implements OnInit {
   private readonly modalController = inject(ModalController);
+  readonly texts = inject(APP_TEXTS_TOKEN);
 
   @Input() mode: 'create' | 'edit' = 'create';
   @Input() initialData: Todo | null = null;
@@ -51,7 +53,9 @@ export class TodoFormComponent implements OnInit {
   );
 
   get formTitle(): string {
-    return this.mode === 'create' ? 'New Todo' : 'Edit Todo';
+    return this.mode === 'create' 
+      ? this.texts.formTitles.newTodo 
+      : this.texts.formTitles.editTodo;
   }
 
   constructor() {

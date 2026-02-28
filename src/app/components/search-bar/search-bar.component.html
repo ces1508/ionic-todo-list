@@ -8,7 +8,7 @@
   <ng-template>
     <app-typeahead
       class="ion-page"
-      title="Select Category"
+      [title]="typeaheadTitle()"
       [items]="items()"
       [selectedItem]="initalData() ?? 0"
       (selectionChange)="onCategorySelection($event)"

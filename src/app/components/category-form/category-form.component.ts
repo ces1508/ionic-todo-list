@@ -7,6 +7,8 @@ import { addIcons } from 'ionicons';
 import { closeOutline } from 'ionicons/icons';
 import { Category, CategoryFormData } from '@models/category.model';
 import { CATEGORY_COLORS } from '@models/category.model';
+import { APP_TEXTS_TOKEN } from '@core/app-texts';
+import { AppTexts } from '@core/app-texts';
 
 @Component({
   selector: 'app-category-form',
@@ -18,6 +20,7 @@ import { CATEGORY_COLORS } from '@models/category.model';
 })
 export class CategoryFormComponent implements OnInit {
   private readonly modalController = inject(ModalController);
+  readonly texts = inject<AppTexts>(APP_TEXTS_TOKEN);
 
   @Input() mode: 'create' | 'edit' = 'create';
   @Input() initialData: Category | null = null;
@@ -35,7 +38,9 @@ export class CategoryFormComponent implements OnInit {
   );
 
   get formTitle(): string {
-    return this.mode === 'create' ? 'New Category' : 'Edit Category';
+    return this.mode === 'create' 
+      ? this.texts.formTitles.newCategory 
+      : this.texts.formTitles.editCategory;
   }
 
   constructor() {

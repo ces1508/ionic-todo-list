@@ -1,0 +1,1 @@
+export const REMOTE_CONFIG_DOWNLOAD_REPORT_KEY = 'downloadReport';
