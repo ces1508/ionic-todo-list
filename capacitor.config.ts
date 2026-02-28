@@ -6,6 +6,7 @@ const config: CapacitorConfig = {
   webDir: 'www',
   server: {
     androidScheme: 'https',
+    iosScheme: 'capacitor', // Prueba con 'ionic' o 'capacitor'
     cleartext: true,
   },
   plugins: {

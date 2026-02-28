@@ -45,16 +45,10 @@ function initializeRemoteConfig() {
   return remoteConfig;
 }
 
-// Database initialization function
-function initializeDatabase() {
-  const sqliteAdapter = new SqliteAdapterService();
-  sqliteAdapter.initialize().then(() => console.log('Database initialized'));
-  return sqliteAdapter;
-}
 
 export const appConfig: ApplicationConfig = {
   providers: [
-    provideZonelessChangeDetection(),
+    provideZoneChangeDetection({ eventCoalescing: true }),
     provideRouter(routes, withComponentInputBinding()),
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
     provideIonicAngular({
@@ -66,9 +60,10 @@ export const appConfig: ApplicationConfig = {
     // App texts
     { provide: APP_TEXTS_TOKEN, useValue: APP_TEXTS },
     // Database provider
-    {
-      provide: SqliteAdapterService,
-      useFactory: initializeDatabase,
-    },
+    // SqliteAdapterService,
+    // provideEnvironmentInitializer(() => {
+    //   const sqlite = inject(SqliteAdapterService);
+    //   sqlite.initialize().then(() => console.log('database ready'));
+    // }),
   ],
 };
