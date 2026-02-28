@@ -1,8 +1,5 @@
 <ion-item button detail="false" (click)="categoryModal.present()">
-  <ion-label position="stacked">{{label()}}</ion-label>
-  <div class="fake-input">
-    {{ selectedText() || placeHolder() }}
-  </div>
+  <ion-input [label]="label()" [placeholder]="selectedText() || placeHolder()" readonly />
 </ion-item>
 <ion-modal #categoryModal>
   <ng-template>

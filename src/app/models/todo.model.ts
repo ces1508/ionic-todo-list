@@ -19,3 +19,10 @@ export interface TodoFormData {
   description?: string;
   categoryId?: number;
 }
+
+export interface TodoPaginationState {
+  currentPage: number;
+  pageSize: number;
+  totalItems: number;
+  hasMore: boolean;
+}

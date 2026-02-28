@@ -44,6 +44,7 @@ export class TodoRepository {
 
   async getAll(
     filter?: TodoFilter,
+    categoryId?: number,
     pagination?: PaginationParams
   ): Promise<PaginatedResult<Todo>> {
     const { skip, limit, page, pageSize } = calculatePagination(
@@ -51,15 +52,12 @@ export class TodoRepository {
       pagination?.pageSize || 20
     );
 
-    // Build WHERE clause based on filter
-    const { whereClause, params } = this.buildFilterClause(filter);
+    const { whereClause, params } = this.buildFilterClause(filter, categoryId);
 
-    // Get total count
     const countQuery = `SELECT COUNT(*) as total FROM ${TODO_TABLE} ${whereClause}`;
     const countResult = await this.db.query<{ total: number }>(countQuery, params);
     const totalItems = countResult[0]?.total || 0;
 
-    // Get paginated results
     const query = `${TODO_SELECT_BASE} ${whereClause} ORDER BY t.createdAt DESC LIMIT ? OFFSET ?`;
     const result = await this.db.query<TodoRow>(query, [...params, limit, skip]);
 
@@ -150,25 +148,33 @@ export class TodoRepository {
   }
 
   /**
-   * Builds WHERE clause and params based on filter
+   * Builds WHERE clause and params based on filter and category
    */
   private buildFilterClause(
-    filter?: TodoFilter
+    filter?: TodoFilter,
+    categoryId?: number
   ): { whereClause: string; params: (string | number | null)[] } {
     const params: (string | number | null)[] = [];
+    const conditions: string[] = [];
 
-    if (!filter || filter === 'all') {
-      return { whereClause: '', params };
+    if (categoryId !== undefined) {
+      conditions.push('categoryId = ?');
+      params.push(categoryId);
     }
 
-    let whereClause = '';
-    if (filter === 'active') {
-      whereClause = 'WHERE completed = ?';
-      params.push(0);
-    } else if (filter === 'completed') {
-      whereClause = 'WHERE completed = ?';
-      params.push(1);
+    if (filter && filter !== 'all') {
+      if (filter === 'active') {
+        conditions.push('completed = ?');
+        params.push(0);
+      } else if (filter === 'completed') {
+        conditions.push('completed = ?');
+        params.push(1);
+      }
     }
+
+    const whereClause = conditions.length > 0 
+      ? `WHERE ${conditions.join(' AND ')}`
+      : '';
 
     return { whereClause, params };
   }

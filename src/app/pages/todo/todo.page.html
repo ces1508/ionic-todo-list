@@ -1,37 +1,28 @@
-<ion-header [translucent]="true">
-  <ion-toolbar>
-    @if (canShare()) {
-      <ion-buttons slot="start" >
-        <app-share-button />
-      </ion-buttons>
-    }
-    <ion-title>{{ texts.pages.todoList }}</ion-title>
-    <ion-buttons slot="end">
-      <ion-button (click)="openCreateModal()">
-        <ion-icon slot="icon-only" name="add" />
-      </ion-button>
-    </ion-buttons>
-  </ion-toolbar>
-  <ion-toolbar>
-    <app-search-bar
-      [label]="texts.placeholders.filterByCategory"
-      [items]="autoCompleteCategoryData()"
-      placeHolder=""
-      [typeaheadTitle]="texts.typeahead.selectCategory"
-      [initalData]="categoryFilterId()"
-      (changeItem)="handleFilterByCategory($event)"
-    ></app-search-bar>
-  </ion-toolbar>
-</ion-header>
+<app-page-header
+  [title]="texts.pages.todoList"
+  (addElement)="openCreateModal()"
+>
+  @if (canShare()) {
+  <app-share-button left />
+  }
+  <app-search-bar
+    [label]="texts.placeholders.filterByCategory"
+    [items]="autoCompleteCategoryData()"
+    placeHolder=""
+    [typeaheadTitle]="texts.typeahead.selectCategory"
+    [initalData]="categoryFilterId()"
+    (changeItem)="handleFilterByCategory($event)"
+  ></app-search-bar>
+</app-page-header>
 
-<ion-content [fullscreen]="true">
+<ion-content [fullscreen]="true" (ionScrollEnd)="onScrollEnd()">
   <ion-header collapse="condense">
     <ion-toolbar>
       <ion-title size="large">{{ texts.pages.todoList }}</ion-title>
     </ion-toolbar>
   </ion-header>
 
-  @defer (when todos().length > 0) {
+  @defer (when todos().length > 0 || loading()) {
   <div class="filters">
     <ion-segment [value]="filter()" (ionChange)="onFilterChange($event)">
       <ion-segment-button value="all">
@@ -55,7 +46,14 @@
     />
     }
   </ion-list>
-  } @placeholder {
+
+  <ion-infinite-scroll
+    [disabled]="!hasMorePages()"
+    (ionInfinite)="onLoadMore($event)"
+  >
+    <ion-infinite-scroll-content></ion-infinite-scroll-content>
+  </ion-infinite-scroll>
+  } @placeholder { @if (!loading()) {
   <app-empty-state
     [title]="emptyDatComponent().title"
     [message]="emptyDatComponent().message"
@@ -67,16 +65,16 @@
     >
     }
   </app-empty-state>
-  } @if (todos().length > 0) {
+  } } @if (todos().length > 0) {
   <ion-footer>
     <ion-toolbar>
       @if (completedCount() > 0) {
-        <span slot="end" class="completed-count">
-          {{ completedCount() }} {{ texts.footer.completed }}
-          <ion-button fill="clear" size="small" (click)="clearCompleted()">
-            {{ texts.footer.clearAll }}
-          </ion-button>
-        </span>
+      <span slot="end" class="completed-count">
+        {{ completedCount() }} {{ texts.footer.completed }}
+        <ion-button fill="clear" size="small" (click)="clearCompleted()">
+          {{ texts.footer.clearAll }}
+        </ion-button>
+      </span>
       }
     </ion-toolbar>
   </ion-footer>

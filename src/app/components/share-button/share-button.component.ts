@@ -6,21 +6,19 @@ import { TodoService } from '@services/todo/todo.service';
 import { ShareService } from '@services/share/share.service';
 import { APP_TEXTS_TOKEN } from '@core/app-texts';
 import { AppTexts } from '@core/app-texts';
+import { ButtonIconComponent } from '@components/button-icon/button-icon.component';
 
 @Component({
   selector: 'app-share-button',
   standalone: true,
-  imports: [IonicModule],
+  imports: [IonicModule, ButtonIconComponent, ButtonIconComponent],
   template: `
-    <ion-button
-      (click)="share()"
-      fill="outline"
-      size="small"
+    <app-button-icon
+      (iconClick)="share()"
       [disabled]="todos().length === 0"
+      iconName="share-outline"
     >
-      <ion-icon slot="start" name="share-outline" />
-      {{ texts.buttons.share }}
-    </ion-button>
+    </app-button-icon>
   `,
 })
 export class ShareButtonComponent {

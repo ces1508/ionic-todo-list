@@ -4,11 +4,13 @@ import {
   computed,
   inject,
   OnInit,
+  OnDestroy,
   signal,
 } from '@angular/core';
 import { IonicModule, ModalController, AlertController } from '@ionic/angular';
 import { addIcons } from 'ionicons';
 import { add } from 'ionicons/icons';
+import { Subject, takeUntil } from 'rxjs';
 import { TodoService } from '@services/todo/todo.service';
 import { CategoryService } from '@services/category/category.service';
 import { TodoFilter, Todo, TodoFormData } from '@models/todo.model';
@@ -23,6 +25,7 @@ import { RemoteConfigService } from '@services/remote-config/remote-config.servi
 import { REMOTE_CONFIG_DOWNLOAD_REPORT_KEY } from '@core/remote-config.constants';
 import { APP_TEXTS_TOKEN } from '@core/app-texts';
 import { from } from 'rxjs';
+import { PageHeaderComponent } from '@components/page-header/page-header.component';
 
 @Component({
   selector: 'app-todo',
@@ -33,18 +36,21 @@ import { from } from 'rxjs';
     EmptyStateComponent,
     SearchBarComponent,
     ShareButtonComponent,
+    PageHeaderComponent,
   ],
   templateUrl: './todo.page.html',
   styleUrls: ['./todo.page.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class TodoPage implements OnInit {
+export class TodoPage implements OnInit, OnDestroy {
   private readonly todoService = inject(TodoService);
   private readonly categoryService = inject(CategoryService);
   private readonly modalController = inject(ModalController);
   private readonly alertController = inject(AlertController);
   private readonly remoteConfigService = inject(RemoteConfigService);
   private readonly router = inject(Router);
+  private readonly destroy$ = new Subject<void>();
+
   readonly texts = inject(APP_TEXTS_TOKEN);
 
   readonly todos = this.todoService.filteredTodos;
@@ -52,7 +58,10 @@ export class TodoPage implements OnInit {
   readonly completedCount = this.todoService.completedCount;
   readonly hasCategories = this.categoryService.hasCategories;
   readonly categories = this.categoryService.categories;
-  categoryFilterId = this.todoService.categoryFilter;
+  readonly loading = this.todoService.loading;
+  readonly categoryFilterId = this.todoService.categoryFilter;
+  readonly hasMorePages = this.todoService.hasMorePages;
+  readonly loadingMore = this.todoService.loadingMore;
 
   editingTodo = signal<Todo | null>(null);
   canShare = signal<boolean>(true);
@@ -84,6 +93,11 @@ export class TodoPage implements OnInit {
   ngOnInit(): void {
     this.checkRemoteConfig();
     this.getTodos();
+  }
+
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 
   getTodos() {
@@ -122,14 +136,27 @@ export class TodoPage implements OnInit {
     this.router.navigate(['/tabs/categories']);
   }
 
-  async handleFilterByCategory(data: TypeaheadItem | undefined) {
+  handleFilterByCategory(data: TypeaheadItem | undefined): void {
     this.todoService.setCategoryFilter(data?.value);
-    if (data?.value) {
-      await this.todoService.loadTodosByCategory(data?.value);
-    } else {
-      await this.todoService.loadTodos();
+  }
+
+  async onLoadMore(event: CustomEvent): Promise<void> {
+    const infiniteScroll = event.target as HTMLIonInfiniteScrollElement;
+    await this.todoService.loadMoreTodos();
+    await infiniteScroll.complete();
+  }
+
+  async onScrollEnd(): Promise<void> {
+    if (this.hasMorePages() && !this.loadingMore()) {
+      await this.todoService.loadMoreTodos();
     }
   }
+
+  async onRefresh(event: any): Promise<void> {
+    await this.todoService.refresh();
+    await event.target.complete();
+  }
+
   openCreateModal(): void {
     if (!this.hasCategories()) {
       this.showNoCategoriesAlert();
@@ -196,19 +223,21 @@ export class TodoPage implements OnInit {
   }
 
   checkRemoteConfig() {
-    from(this.remoteConfigService.load()).subscribe({
-      next: () => {
-        const remoteValue = this.remoteConfigService.getBoolean(
-          REMOTE_CONFIG_DOWNLOAD_REPORT_KEY,
-        );
-        if (remoteValue !== this.canShare()) {
-          this.canShare.set(remoteValue);
-        }
-      },
-      error: () => {
-        // Silent fail for remote config
-      },
-    });
+    from(this.remoteConfigService.load())
+      .pipe(takeUntil(this.destroy$))
+      .subscribe({
+        next: () => {
+          const remoteValue = this.remoteConfigService.getBoolean(
+            REMOTE_CONFIG_DOWNLOAD_REPORT_KEY,
+          );
+          if (remoteValue !== this.canShare()) {
+            this.canShare.set(remoteValue);
+          }
+        },
+        error: () => {
+          // Silent fail for remote config
+        },
+      });
   }
 }
 

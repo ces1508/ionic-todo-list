@@ -54,7 +54,7 @@ function initializeDatabase() {
 
 export const appConfig: ApplicationConfig = {
   providers: [
-    provideZoneChangeDetection({ eventCoalescing: true }),
+    provideZonelessChangeDetection(),
     provideRouter(routes, withComponentInputBinding()),
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
     provideIonicAngular({
