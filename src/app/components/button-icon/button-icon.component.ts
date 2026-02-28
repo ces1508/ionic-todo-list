@@ -7,7 +7,11 @@ import { IonicModule } from '@ionic/angular';
   standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
-    <ion-button (click)="iconClick.emit()" fill="clear" [disabled]="disabled()">
+    <ion-button
+      (click)="iconClick.emit()"
+      [fill]="fill()"
+      [disabled]="disabled()"
+    >
       <ion-icon [slot]="iconSlot()" [name]="iconName()" />
     </ion-button>
   `,
@@ -15,7 +19,7 @@ import { IonicModule } from '@ionic/angular';
 export class ButtonIconComponent {
   iconName = input.required();
   disabled = input<boolean>(false);
-  iconSlot = input<'start' | 'end' | 'icon-only'>('icon-only')
-  fill = input<'clear' | 'outline' | 'solid'>('clear')
+  iconSlot = input<'start' | 'end' | 'icon-only'>('icon-only');
+  fill = input<'clear' | 'outline' | 'solid'>('clear');
   iconClick = output<void>();
 }
