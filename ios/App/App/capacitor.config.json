@@ -5,7 +5,8 @@
 	"server": {
 		"androidScheme": "https",
 		"iosScheme": "capacitor",
-		"cleartext": true
+		"cleartext": true,
+		"url": "http://localhost:8100"
 	},
 	"plugins": {
 		"CapacitorSQLite": {

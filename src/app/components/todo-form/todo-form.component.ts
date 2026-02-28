@@ -6,7 +6,18 @@ import {
   inject,
 } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
-import { IonicModule, ModalController, IonModal } from '@ionic/angular';
+import {
+  IonButtons,
+  IonButton,
+  IonIcon,
+  IonTitle,
+  IonContent,
+  IonList,
+  IonItem,
+  IonInput,
+  IonTextarea,
+  ModalController,
+} from '@ionic/angular/standalone';
 import {
   FormControl,
   FormGroup,
@@ -25,7 +36,7 @@ import { APP_TEXTS_TOKEN } from '@core/app-texts';
 @Component({
   selector: 'app-todo-form',
   standalone: true,
-  imports: [IonicModule, ReactiveFormsModule, SearchBarComponent],
+  imports: [IonButtons, IonButton, IonIcon, IonTitle, IonContent, IonList, IonItem, IonInput, IonTextarea, ReactiveFormsModule, SearchBarComponent],
   templateUrl: './todo-form.component.html',
   styleUrls: ['./todo-form.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,

@@ -7,7 +7,20 @@ import {
   OnDestroy,
   signal,
 } from '@angular/core';
-import { IonicModule, ModalController, AlertController } from '@ionic/angular';
+import {
+  IonContent,
+  IonToolbar,
+  IonSegment,
+  IonSegmentButton,
+  IonLabel,
+  IonList,
+  IonInfiniteScroll,
+  IonInfiniteScrollContent,
+  IonFooter,
+  IonButton,
+  ModalController,
+  AlertController,
+} from '@ionic/angular/standalone';
 import { addIcons } from 'ionicons';
 import { add } from 'ionicons/icons';
 import { Subject, takeUntil } from 'rxjs';
@@ -31,7 +44,16 @@ import { PageHeaderComponent } from '@components/page-header/page-header.compone
   selector: 'app-todo',
   standalone: true,
   imports: [
-    IonicModule,
+    IonContent,
+    IonToolbar,
+    IonSegment,
+    IonSegmentButton,
+    IonLabel,
+    IonList,
+    IonInfiniteScroll,
+    IonInfiniteScrollContent,
+    IonFooter,
+    IonButton,
     TodoItemComponent,
     EmptyStateComponent,
     SearchBarComponent,

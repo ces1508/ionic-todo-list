@@ -1,5 +1,12 @@
 import { Component, input, output } from '@angular/core';
-import { IonicModule } from '@ionic/angular';
+import {
+  IonItem,
+  IonCheckbox,
+  IonLabel,
+  IonButtons,
+  IonButton,
+  IonIcon,
+} from '@ionic/angular/standalone';
 import { addIcons } from 'ionicons';
 import { trashOutline, createOutline } from 'ionicons/icons';
 import { Todo } from '@models/todo.model';
@@ -7,7 +14,7 @@ import { Todo } from '@models/todo.model';
 @Component({
   selector: 'app-todo-item',
   standalone: true,
-  imports: [IonicModule],
+  imports: [IonItem, IonCheckbox, IonLabel, IonButtons, IonButton, IonIcon],
   templateUrl: './todo-item.component.html',
   styleUrls: ['./todo-item.component.scss'],
 })

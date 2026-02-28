@@ -1,7 +1,29 @@
-import { Component, output, Input, ChangeDetectionStrategy, OnInit, inject } from '@angular/core';
+import {
+  Component,
+  Input,
+  ChangeDetectionStrategy,
+  OnInit,
+  inject,
+} from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
-import { IonicModule, ModalController } from '@ionic/angular';
-import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import {
+  IonButtons,
+  IonButton,
+  IonTitle,
+  IonIcon,
+  IonContent,
+  IonList,
+  IonInput,
+  IonItem,
+  IonLabel,
+  ModalController,
+} from '@ionic/angular/standalone';
+import {
+  FormControl,
+  FormGroup,
+  ReactiveFormsModule,
+  Validators,
+} from '@angular/forms';
 import { map } from 'rxjs';
 import { addIcons } from 'ionicons';
 import { closeOutline } from 'ionicons/icons';
@@ -13,7 +35,18 @@ import { AppTexts } from '@core/app-texts';
 @Component({
   selector: 'app-category-form',
   standalone: true,
-  imports: [IonicModule, ReactiveFormsModule],
+  imports: [
+    IonButtons,
+    IonButton,
+    IonTitle,
+    IonIcon,
+    IonContent,
+    IonList,
+    IonInput,
+    IonItem,
+    IonLabel,
+    ReactiveFormsModule,
+  ],
   templateUrl: './category-form.component.html',
   styleUrls: ['./category-form.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -26,7 +59,10 @@ export class CategoryFormComponent implements OnInit {
   @Input() initialData: Category | null = null;
 
   categoryForm = new FormGroup({
-    name: new FormControl<string>('', [Validators.required, Validators.minLength(2)]),
+    name: new FormControl<string>('', [
+      Validators.required,
+      Validators.minLength(2),
+    ]),
     color: new FormControl<string>(''),
   });
 
@@ -34,12 +70,12 @@ export class CategoryFormComponent implements OnInit {
 
   readonly isValid = toSignal(
     this.categoryForm.statusChanges.pipe(map(() => this.categoryForm.valid)),
-    { initialValue: false }
+    { initialValue: false },
   );
 
   get formTitle(): string {
-    return this.mode === 'create' 
-      ? this.texts.formTitles.newCategory 
+    return this.mode === 'create'
+      ? this.texts.formTitles.newCategory
       : this.texts.formTitles.editCategory;
   }
 
@@ -65,11 +101,13 @@ export class CategoryFormComponent implements OnInit {
     }
   }
 
-  protected closeModal(formData: CategoryFormData | undefined = undefined): void {
+  protected closeModal(
+    formData: CategoryFormData | undefined = undefined,
+  ): void {
     this.modalController.dismiss(formData, formData ? 'submit' : 'cancel');
   }
 
-   private chooseRandomColor(): string {
+  private chooseRandomColor(): string {
     const randomIndex = Math.floor(Math.random() * CATEGORY_COLORS.length);
     return CATEGORY_COLORS[randomIndex];
   }

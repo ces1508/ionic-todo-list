@@ -6,7 +6,7 @@ import {
   effect,
 } from '@angular/core';
 import { Router, RouterOutlet } from '@angular/router';
-import { IonicModule } from '@ionic/angular';
+import { IonApp, IonRouterOutlet } from '@ionic/angular/standalone';
 import { CategoryService } from '@services/category/category.service';
 import { RemoteConfigService } from '@services/remote-config/remote-config.service';
 
@@ -15,7 +15,7 @@ import { RemoteConfigService } from '@services/remote-config/remote-config.servi
   templateUrl: 'app.component.html',
   styleUrls: ['app.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [IonicModule, RouterOutlet],
+  imports: [IonApp, RouterOutlet],
 })
 export class AppComponent implements OnInit {
   categoryService = inject(CategoryService);

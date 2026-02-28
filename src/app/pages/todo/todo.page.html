@@ -16,12 +16,6 @@
 </app-page-header>
 
 <ion-content [fullscreen]="true" (ionScrollEnd)="onScrollEnd()">
-  <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">{{ texts.pages.todoList }}</ion-title>
-    </ion-toolbar>
-  </ion-header>
-
   @defer (when todos().length > 0 || loading()) {
   <div class="filters">
     <ion-segment [value]="filter()" (ionChange)="onFilterChange($event)">

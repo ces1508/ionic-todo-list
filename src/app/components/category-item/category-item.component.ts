@@ -1,5 +1,11 @@
 import { Component, input, output } from '@angular/core';
-import { IonicModule } from '@ionic/angular';
+import {
+  IonItem,
+  IonLabel,
+  IonButtons,
+  IonButton,
+  IonIcon,
+} from '@ionic/angular/standalone';
 import { addIcons } from 'ionicons';
 import { trashOutline, createOutline } from 'ionicons/icons';
 import { Category } from '@models/category.model';
@@ -8,7 +14,7 @@ import { DotColorComponent } from '@components/category-color/dot-color.componen
 @Component({
   selector: 'app-category-item',
   standalone: true,
-  imports: [IonicModule, DotColorComponent],
+  imports: [IonItem, IonLabel, IonButtons, IonButton, IonIcon, DotColorComponent],
   templateUrl: './category-item.component.html',
   styleUrls: ['./category-item.component.scss'],
 })

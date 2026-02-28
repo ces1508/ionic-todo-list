@@ -1,5 +1,4 @@
 import { Component, inject } from '@angular/core';
-import { IonicModule } from '@ionic/angular';
 import { addIcons } from 'ionicons';
 import { shareOutline } from 'ionicons/icons';
 import { TodoService } from '@services/todo/todo.service';
@@ -11,7 +10,7 @@ import { ButtonIconComponent } from '@components/button-icon/button-icon.compone
 @Component({
   selector: 'app-share-button',
   standalone: true,
-  imports: [IonicModule, ButtonIconComponent, ButtonIconComponent],
+  imports: [ButtonIconComponent],
   template: `
     <app-button-icon
       (iconClick)="share()"

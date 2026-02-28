@@ -1,5 +1,5 @@
 import { Component, input, OutputEmitterRef, output } from '@angular/core';
-import { IonicModule } from '@ionic/angular';
+import { IonIcon, IonButton } from '@ionic/angular/standalone';
 import { addIcons } from 'ionicons';
 import { documentTextOutline } from 'ionicons/icons';
 
@@ -11,7 +11,7 @@ export interface EmptyStateAction {
 @Component({
   selector: 'app-empty-state',
   standalone: true,
-  imports: [IonicModule],
+  imports: [IonIcon, IonButton],
   template: `
     <div class="empty-container">
       <ion-icon [name]="icon()" class="empty-icon" />

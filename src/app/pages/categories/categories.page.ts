@@ -4,7 +4,11 @@ import {
   inject,
   signal,
 } from '@angular/core';
-import { IonicModule, ModalController } from '@ionic/angular';
+import {
+  IonContent,
+  IonList,
+  ModalController,
+} from '@ionic/angular/standalone';
 import { addIcons } from 'ionicons';
 import { add } from 'ionicons/icons';
 import { CategoryService } from '@services/category/category.service';
@@ -18,7 +22,13 @@ import { APP_TEXTS_TOKEN } from '@core/app-texts';
 @Component({
   selector: 'app-categories',
   standalone: true,
-  imports: [IonicModule, CategoryItemComponent, EmptyStateComponent, PageHeaderComponent],
+  imports: [
+    IonContent,
+    IonList,
+    CategoryItemComponent,
+    EmptyStateComponent,
+    PageHeaderComponent,
+  ],
   templateUrl: './categories.page.html',
   styleUrls: ['./categories.page.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,

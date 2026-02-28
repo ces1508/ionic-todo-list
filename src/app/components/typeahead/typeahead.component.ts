@@ -8,7 +8,19 @@ import {
   computed,
   inject,
 } from '@angular/core';
-import { IonicModule } from '@ionic/angular';
+import {
+  IonHeader,
+  IonToolbar,
+  IonButtons,
+  IonButton,
+  IonIcon,
+  IonTitle,
+  IonSearchbar,
+  IonContent,
+  IonList,
+  IonItem,
+  IonLabel,
+} from '@ionic/angular/standalone';
 import { TypeaheadItem } from '@models/type-head.model';
 import { normalizeString } from '@utils/normalize-string';
 import { addIcons } from 'ionicons';
@@ -23,7 +35,19 @@ import { AppTexts } from '@core/app-texts';
 @Component({
   selector: 'app-typeahead',
   standalone: true,
-  imports: [IonicModule],
+  imports: [
+    IonHeader,
+    IonToolbar,
+    IonButtons,
+    IonButton,
+    IonIcon,
+    IonTitle,
+    IonSearchbar,
+    IonContent,
+    IonList,
+    IonItem,
+    IonLabel,
+  ],
   template: `
     <ion-header>
       <ion-toolbar>

@@ -1,9 +1,9 @@
 import { ChangeDetectionStrategy, Component, input, output } from '@angular/core';
-import { IonicModule } from '@ionic/angular';
+import { IonButton, IonIcon } from '@ionic/angular/standalone';
 
 @Component({
   selector: 'app-button-icon',
-  imports: [IonicModule],
+  imports: [IonButton, IonIcon],
   standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `

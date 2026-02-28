@@ -48,7 +48,7 @@ function initializeRemoteConfig() {
 
 export const appConfig: ApplicationConfig = {
   providers: [
-    provideZoneChangeDetection({ eventCoalescing: true }),
+    provideZonelessChangeDetection(),
     provideRouter(routes, withComponentInputBinding()),
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
     provideIonicAngular({
@@ -59,11 +59,13 @@ export const appConfig: ApplicationConfig = {
     provideRemoteConfig(initializeRemoteConfig),
     // App texts
     { provide: APP_TEXTS_TOKEN, useValue: APP_TEXTS },
-    // Database provider
-    // SqliteAdapterService,
-    // provideEnvironmentInitializer(() => {
-    //   const sqlite = inject(SqliteAdapterService);
-    //   sqlite.initialize().then(() => console.log('database ready'));
-    // }),
+    SqliteAdapterService,
+    RemoteConfigService,
+    provideEnvironmentInitializer(() => {
+      const sqlite = inject(SqliteAdapterService);
+      const remoteConfig = inject(RemoteConfigService);
+      remoteConfig.load().then(() => console.log('remote config ready'));
+      sqlite.initialize().then(() => console.log('database ready'));
+    }),
   ],
 };

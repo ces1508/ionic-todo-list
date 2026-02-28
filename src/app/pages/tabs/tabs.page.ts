@@ -1,5 +1,5 @@
 import { Component, inject } from '@angular/core';
-import { IonicModule } from '@ionic/angular';
+import { IonTabs, IonTabBar, IonTabButton, IonIcon, IonLabel } from '@ionic/angular/standalone';
 import { RouterModule } from '@angular/router';
 import { addIcons } from 'ionicons';
 import { folderOutline, listOutline } from 'ionicons/icons';
@@ -8,7 +8,7 @@ import { APP_TEXTS_TOKEN } from '@core/app-texts';
 @Component({
   selector: 'app-tabs',
   standalone: true,
-  imports: [IonicModule, RouterModule],
+  imports: [IonTabs, IonTabBar, IonTabButton, IonIcon, IonLabel, RouterModule],
   template: `
     <ion-tabs>
       <ion-tab-bar slot="bottom">

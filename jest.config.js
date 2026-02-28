@@ -22,6 +22,5 @@ module.exports = {
     '@adapters/(.*)': '<rootDir>/src/app/adapters/$1',
     '@repositories/(.*)': '<rootDir>/src/app/repositories/$1'
   },
-  testMatch: ['**/*.spec.ts'],
-  transformIgnorePatterns: ['node_modules/(?!@ionic|@angular)']
+  testMatch: ['**/*.spec.ts']
 };

@@ -1,10 +1,16 @@
 import { Component, input, output } from '@angular/core';
 import { ButtonIconComponent } from '@components/button-icon/button-icon.component';
-import { IonicModule } from '@ionic/angular';
+import {
+  IonHeader,
+  IonToolbar,
+  IonButtons,
+  IonTitle,
+} from '@ionic/angular/standalone';
 
 @Component({
   selector: 'app-page-header',
-  imports: [IonicModule, ButtonIconComponent],
+  imports: [IonHeader, IonToolbar, IonButtons, IonTitle, ButtonIconComponent],
+  standalone: true,
   template: `
     <ion-header [translucent]="translucent()" collapse="condense">
       <ion-toolbar>
