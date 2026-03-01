@@ -1,6 +1,8 @@
-<ion-item button detail="false" (click)="categoryModal.present()">
-  <ion-input [label]="label()" [placeholder]="selectedText() || placeHolder()" readonly />
-</ion-item>
+<ion-searchbar 
+  search-icon="search-circle"
+  [placeholder]="selectedText() || placeHolder()"
+  (click)="categoryModal.present()" readonly> </ion-searchbar>
+
 <ion-modal #categoryModal>
   <ng-template>
     <app-typeahead

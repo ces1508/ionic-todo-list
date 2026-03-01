@@ -6,9 +6,8 @@
   <app-share-button left />
   }
   <app-search-bar
-    [label]="texts.placeholders.filterByCategory"
     [items]="autoCompleteCategoryData()"
-    placeHolder=""
+    [placeHolder]="texts.placeholders.filterByCategory"
     [typeaheadTitle]="texts.typeahead.selectCategory"
     [initalData]="categoryFilterId()"
     (changeItem)="handleFilterByCategory($event)"
@@ -59,18 +58,5 @@
     >
     }
   </app-empty-state>
-  } } @if (todos().length > 0) {
-  <ion-footer>
-    <ion-toolbar>
-      @if (completedCount() > 0) {
-      <span slot="end" class="completed-count">
-        {{ completedCount() }} {{ texts.footer.completed }}
-        <ion-button fill="clear" size="small" (click)="clearCompleted()">
-          {{ texts.footer.clearAll }}
-        </ion-button>
-      </span>
-      }
-    </ion-toolbar>
-  </ion-footer>
-  }
+  } } 
 </ion-content>

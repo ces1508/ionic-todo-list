@@ -16,7 +16,6 @@ import {
   IonList,
   IonInfiniteScroll,
   IonInfiniteScrollContent,
-  IonFooter,
   IonButton,
   ModalController,
   AlertController,
@@ -52,7 +51,6 @@ import { PageHeaderComponent } from '@components/page-header/page-header.compone
     IonList,
     IonInfiniteScroll,
     IonInfiniteScrollContent,
-    IonFooter,
     IonButton,
     TodoItemComponent,
     EmptyStateComponent,
@@ -136,10 +134,6 @@ export class TodoPage implements OnInit, OnDestroy {
 
   onDelete(id: number): void {
     this.todoService.deleteTodo(id);
-  }
-
-  clearCompleted(): void {
-    this.todoService.clearCompleted();
   }
 
   openEditModal(todo: Todo): void {

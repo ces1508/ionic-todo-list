@@ -25,14 +25,19 @@
         />
       </ion-item>
       <ion-item>
-        <app-search-bar
-          [label]="texts.form.categoryRequired"
-          [placeHolder]="texts.placeholders.selectCategory"
-          [typeaheadTitle]="texts.typeahead.selectCategory"
-          [items]="categories"
-          [initalData]="initialData?.categoryId ?? undefined"
-          (changeItem)="onCategorySelection($event)"
-        ></app-search-bar>
+        @if (selectReady()) {
+          <ion-select
+            [label]="texts.form.categoryRequired"
+            [placeholder]="texts.placeholders.selectCategory"
+            formControlName="categoryId"
+          >
+            @for (category of categories; track category.value) {
+              <ion-select-option [value]="category.value">
+                {{ category.text }}
+              </ion-select-option>
+            }
+          </ion-select>
+        } 
       </ion-item>
       <ion-item>
         <ion-textarea
