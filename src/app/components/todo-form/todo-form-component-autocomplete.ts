@@ -4,6 +4,7 @@ import {
   ChangeDetectionStrategy,
   OnInit,
   inject,
+  signal,
 } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
 import {
@@ -16,8 +17,6 @@ import {
   IonItem,
   IonInput,
   IonTextarea,
-  IonSelect,
-  IonSelectOption,
   ModalController,
 } from '@ionic/angular/standalone';
 import {
@@ -25,7 +24,6 @@ import {
   FormGroup,
   ReactiveFormsModule,
   Validators,
-  FormsModule,
 } from '@angular/forms';
 import { map } from 'rxjs';
 import { addIcons } from 'ionicons';
@@ -33,6 +31,7 @@ import { closeOutline } from 'ionicons/icons';
 import { Todo, TodoFormData } from '@models/todo.model';
 import { trimObjectValues } from '@utils/trim.util';
 import { TypeaheadItem } from '@models/type-head.model';
+import { AutocompleteComponent } from '../autocomplete/autocomplete.component';
 import { APP_TEXTS_TOKEN } from '@core/app-texts';
 
 @Component({
@@ -48,10 +47,8 @@ import { APP_TEXTS_TOKEN } from '@core/app-texts';
     IonItem,
     IonInput,
     IonTextarea,
-    IonSelect,
-    IonSelectOption,
+    AutocompleteComponent,
     ReactiveFormsModule,
-    FormsModule,
   ],
   templateUrl: './todo-form.component.html',
   styleUrls: ['./todo-form.component.scss'],
@@ -79,6 +76,8 @@ export class TodoFormComponent implements OnInit {
     { initialValue: false },
   );
 
+  selectedCategory = signal<TypeaheadItem | undefined>(undefined);
+
   get formTitle(): string {
     return this.mode === 'create'
       ? this.texts.formTitles.newTodo
@@ -103,7 +102,10 @@ export class TodoFormComponent implements OnInit {
     }
   }
 
-
+  onCategorySelection(item: TypeaheadItem | undefined): void {
+    this.selectedCategory.set(item);
+    this.todoForm.patchValue({ categoryId: item?.value || null });
+  }
 
   protected closeModal(formData: TodoFormData | undefined = undefined): void {
     this.modalController.dismiss(formData, formData ? 'submit' : 'cancel');
@@ -111,11 +113,18 @@ export class TodoFormComponent implements OnInit {
 
   private fillForm(): void {
     const { title, description, categoryId } = this.initialData!;
+    
     this.todoForm.setValue({
       title,
       description: description || '',
       categoryId: categoryId ?? null,
     });
+
+    // Establecer categoría seleccionada
+    if (categoryId) {
+      const category = this.categories.find(c => c.value === categoryId);
+      this.selectedCategory.set(category);
+    }
   }
 
   private resetFormValues(): void {
@@ -124,5 +133,6 @@ export class TodoFormComponent implements OnInit {
       description: '',
       categoryId: null,
     });
+    this.selectedCategory.set(undefined);
   }
 }

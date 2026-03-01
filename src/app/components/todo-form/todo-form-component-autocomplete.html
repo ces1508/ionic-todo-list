@@ -25,19 +25,13 @@
         />
       </ion-item>
       <ion-item>
-        <ion-select
+        <app-autocomplete
           [label]="texts.form.categoryRequired"
           [placeholder]="texts.placeholders.selectCategory"
-          formControlName="categoryId"
-          interface="alert"
-          [interfaceOptions]="{ header: texts.form.categoryRequired }"
-        >
-          @for (category of categories; track category.value) {
-            <ion-select-option [value]="category.value">
-              {{ category.text }}
-            </ion-select-option>
-          }
-        </ion-select>
+          [items]="categories"
+          [selectedItem]="selectedCategory()?.value"
+          (selectionChange)="onCategorySelection($event)"
+        ></app-autocomplete>
       </ion-item>
       <ion-item>
         <ion-textarea
