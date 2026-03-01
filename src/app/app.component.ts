@@ -3,10 +3,9 @@ import {
   ChangeDetectionStrategy,
   inject,
   OnInit,
-  effect,
 } from '@angular/core';
-import { Router, RouterOutlet } from '@angular/router';
-import { IonApp, IonRouterOutlet } from '@ionic/angular/standalone';
+import { RouterOutlet } from '@angular/router';
+import { IonApp } from '@ionic/angular/standalone';
 import { CategoryService } from '@services/category/category.service';
 import { RemoteConfigService } from '@services/remote-config/remote-config.service';
 

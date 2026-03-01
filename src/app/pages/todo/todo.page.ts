@@ -9,7 +9,6 @@ import {
 } from '@angular/core';
 import {
   IonContent,
-  IonToolbar,
   IonSegment,
   IonSegmentButton,
   IonLabel,
@@ -44,7 +43,6 @@ import { PageHeaderComponent } from '@components/page-header/page-header.compone
   standalone: true,
   imports: [
     IonContent,
-    IonToolbar,
     IonSegment,
     IonSegmentButton,
     IonLabel,
